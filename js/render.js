@@ -4,24 +4,24 @@
 window.App = window.App || {};
 
 App.fallback = function (img) {
-    img.parentElement.classList.add("is-fallback");
-    img.remove();
+  img.parentElement.classList.add("is-fallback");
+  img.remove();
 };
 
 App.render = (function () {
-    const $ = (s) => document.querySelector(s);
-    const I = (n, s) => App.icon(n, s);
-    const has = (u) => u && u !== "#";
-    const pad = (n) => String(n).padStart(2, "0");
+  const $ = (s) => document.querySelector(s);
+  const I = (n, s) => App.icon(n, s);
+  const has = (u) => u && u !== "#";
+  const pad = (n) => String(n).padStart(2, "0");
 
-    function heroSocial() {
-        $("#heroSocial").innerHTML = App.data.socials.map((s) => `
+  function heroSocial() {
+    $("#heroSocial").innerHTML = App.data.socials.map((s) => `
       <li><a class="icon-btn" data-glow href="${s.url}" ${s.url.startsWith("http") ? 'target="_blank" rel="me noopener noreferrer"' : ""} aria-label="${s.label}" title="${s.label}">${I(s.icon, 18)}</a></li>`).join("");
-    }
+  }
 
-    function about() {
-        const { about: a, profile: p, stats } = App.data;
-        $("#aboutMount").innerHTML = `
+  function about() {
+    const { about: a, profile: p, stats } = App.data;
+    $("#aboutMount").innerHTML = `
       <div class="about__text reveal">
         ${a.paragraphs.map((t) => `<p>${t}</p>`).join("")}
         <div class="about__meta">${a.meta.map((m) => `<span>${I(m.icon, 16)}${m.text}</span>`).join("")}</div>
@@ -37,10 +37,10 @@ App.render = (function () {
             <span class="stat__label">${s.label}</span>
           </div>`).join("")}
       </div>`;
-    }
+  }
 
-    function skills() {
-        $("#skillsMount").innerHTML = App.data.skills.map((g, i) => `
+  function skills() {
+    $("#skillsMount").innerHTML = App.data.skills.map((g, i) => `
       <div class="card skill-group reveal" data-glow style="--d:${i * 80}ms">
         <div class="skill-group__head">
           <span class="skill-group__icon">${I(g.icon, 18)}</span><h3>${g.title}</h3>
@@ -48,14 +48,14 @@ App.render = (function () {
         <div class="chips">${g.items.map((x) => `<span class="chip">${x}</span>`).join("")}</div>
       </div>`).join("");
 
-        $("#marqueeMount").innerHTML = App.data.marquee.map((row) => {
-            const items = row.map((w, j) => `<span class="marquee__item ${j % 2 ? "is-outline" : ""}">${w}</span><span class="marquee__sep">✦</span>`).join("");
-            return `<div class="marquee__row" aria-hidden="true">${items}${items}</div>`;
-        }).join("");
-    }
+    $("#marqueeMount").innerHTML = App.data.marquee.map((row) => {
+      const items = row.map((w, j) => `<span class="marquee__item ${j % 2 ? "is-outline" : ""}">${w}</span><span class="marquee__sep">✦</span>`).join("");
+      return `<div class="marquee__row" aria-hidden="true">${items}${items}</div>`;
+    }).join("");
+  }
 
-    function timeline() {
-        $("#timelineItems").innerHTML = App.data.timeline.map((t) => `
+  function timeline() {
+    $("#timelineItems").innerHTML = App.data.timeline.map((t) => `
       <div class="tl-item reveal">
         <div class="card tl-card" data-glow>
           <div class="tl-card__top">
@@ -68,13 +68,13 @@ App.render = (function () {
           ${t.chips ? `<div class="chips chips--sm">${t.chips.map((c) => `<span class="chip">${c}</span>`).join("")}</div>` : ""}
         </div>
       </div>`).join("");
-    }
+  }
 
-    function projects() {
-        $("#projectsTrack").innerHTML = App.data.projects.map((p, i) => {
-            const links = p.links.filter((l) => has(l.url))
-                .map((l) => `<a class="link-arrow" href="${l.url}" target="_blank" rel="noopener">${I(l.icon, 15)}${l.label}</a>`).join("");
-            return `
+  function projects() {
+    $("#projectsTrack").innerHTML = App.data.projects.map((p, i) => {
+      const links = p.links.filter((l) => has(l.url))
+        .map((l) => `<a class="link-arrow" href="${l.url}" target="_blank" rel="noopener">${I(l.icon, 15)}${l.label}</a>`).join("");
+      return `
       <article class="project">
         <div class="card project__inner" data-glow data-tilt>
           <div class="project__media">
@@ -92,11 +92,11 @@ App.render = (function () {
           </div>
         </div>
       </article>`;
-        }).join("");
-    }
+    }).join("");
+  }
 
-    function stack() {
-        $("#stackMount").innerHTML = App.data.achievements.map((a, i) => `
+  function stack() {
+    $("#stackMount").innerHTML = App.data.achievements.map((a, i) => `
       <article class="card stack__card" data-glow style="--i:${i}">
         <div class="stack__icon">${I(a.icon, 26)}</div>
         <div>
@@ -108,12 +108,12 @@ App.render = (function () {
         </div>
         <span class="stack__num">${pad(i + 1)}</span>
       </article>`).join("");
-    }
+  }
 
-    function resume() {
-        const r = App.data.profile.resume;
-        const file = r.split("/").pop();
-        $("#resumeMount").innerHTML = `
+  function resume() {
+    const r = App.data.profile.resume;
+    const file = r.split("/").pop();
+    $("#resumeMount").innerHTML = `
       <div class="card resume__viewer reveal">
         <div class="resume__bar">
           <span class="resume__dots"><i></i><i></i><i></i></span>
@@ -139,22 +139,22 @@ App.render = (function () {
           <dl>${App.data.resumeFacts.map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join("")}</dl>
         </div>
       </aside>`;
-    }
+  }
 
-    function contact() {
-        const p = App.data.profile;
-        const socials = App.data.socials.filter((s) => s.icon !== "mail")
-            .map((s) => `<a class="btn btn--ghost" href="${s.url}" target="_blank" rel="me noopener noreferrer">${I(s.icon, 16)} ${s.label}</a>`).join("");
-        $("#contactMount").innerHTML = `
+  function contact() {
+    const p = App.data.profile;
+    const socials = App.data.socials.filter((s) => s.icon !== "mail")
+      .map((s) => `<a class="btn btn--ghost" href="${s.url}" target="_blank" rel="me noopener noreferrer">${I(s.icon, 16)} ${s.label}</a>`).join("");
+    $("#contactMount").innerHTML = `
       <a class="btn btn--primary btn--lg" href="mailto:${p.email}">${I("mail", 18)} ${p.email}</a>
       <div class="contact__row">
         <button class="btn btn--ghost" type="button" data-copy="${p.email}">${I("copy", 16)} Copy email</button>
         ${socials}
         ${p.showPhone ? `<a class="btn btn--ghost" href="tel:${p.phone.replace(/[^+\d]/g, "")}">${I("phone", 16)} ${p.phone}</a>` : ""}
       </div>`;
-    }
+  }
 
-    return {
-        all() { heroSocial(); about(); skills(); timeline(); projects(); stack(); resume(); contact(); },
-    };
+  return {
+    all() { heroSocial(); about(); skills(); timeline(); projects(); stack(); resume(); contact(); },
+  };
 })();
