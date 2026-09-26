@@ -16,7 +16,7 @@ App.render = (function () {
 
     function heroSocial() {
         $("#heroSocial").innerHTML = App.data.socials.map((s) => `
-      <li><a class="icon-btn" data-glow href="${s.url}" ${s.url.startsWith("http") ? 'target="_blank" rel="noopener"' : ""} aria-label="${s.label}" title="${s.label}">${I(s.icon, 18)}</a></li>`).join("");
+      <li><a class="icon-btn" data-glow href="${s.url}" ${s.url.startsWith("http") ? 'target="_blank" rel="me noopener noreferrer"' : ""} aria-label="${s.label}" title="${s.label}">${I(s.icon, 18)}</a></li>`).join("");
     }
 
     function about() {
@@ -144,7 +144,7 @@ App.render = (function () {
     function contact() {
         const p = App.data.profile;
         const socials = App.data.socials.filter((s) => s.icon !== "mail")
-            .map((s) => `<a class="btn btn--ghost" href="${s.url}" target="_blank" rel="noopener">${I(s.icon, 16)} ${s.label}</a>`).join("");
+            .map((s) => `<a class="btn btn--ghost" href="${s.url}" target="_blank" rel="me noopener noreferrer">${I(s.icon, 16)} ${s.label}</a>`).join("");
         $("#contactMount").innerHTML = `
       <a class="btn btn--primary btn--lg" href="mailto:${p.email}">${I("mail", 18)} ${p.email}</a>
       <div class="contact__row">

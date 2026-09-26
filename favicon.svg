@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64"><metadata><rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/"><rdf:Description><dc:creator>RealFaviconGenerator</dc:creator><dc:source>https://realfavicongenerator.net</dc:source></rdf:Description></rdf:RDF></metadata><defs>
+        <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#f5b048"></stop>
+            <stop offset="1" stop-color="#ff7a45"></stop>
+        </linearGradient>
+    </defs><rect width="64" height="64" rx="14" fill="#07080c"></rect><text x="32" y="42" text-anchor="middle" font-family="Arial, sans-serif" font-weight="700" font-size="26" fill="url(#g)">JG</text></svg>
