@@ -122,7 +122,6 @@ main,
     opacity 0.4s,
     transform 0.6s var(--ease-out);
 }
-.story-rail.is-talking .story-rail__label,
 .story-rail:hover .story-rail__label,
 .story-rail:focus-within .story-rail__label {
   opacity: 1;

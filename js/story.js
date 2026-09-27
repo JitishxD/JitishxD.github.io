@@ -15,7 +15,7 @@ App.story = (function () {
         contact: { title: "Epilogue", line: "All threads meet here. Let's tie ours." },
     };
 
-    let rail, label, numEl, titleEl, lineEl, items = [], current = -1, hideTimer;
+    let rail, label, numEl, titleEl, lineEl, items = [], current = -1;
 
     function showLabel(i) {
         const it = items[i];
@@ -37,9 +37,6 @@ App.story = (function () {
             else it.a.removeAttribute("aria-current");
         });
         showLabel(i);
-        rail.classList.add("is-talking");
-        clearTimeout(hideTimer);
-        hideTimer = setTimeout(() => rail.classList.remove("is-talking"), 2800);
     }
 
     function init() {
