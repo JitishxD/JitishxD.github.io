@@ -108,6 +108,7 @@
     top: var(--nav-h);
     left: 0;
     right: 0;
+    z-index: 100;
     flex-direction: column;
     gap: 0.25rem;
     padding: 1rem 1.25rem 1.75rem;
@@ -145,7 +146,7 @@
 /* ---------- HERO ---------- */
 .hero {
   position: relative;
-  z-index: 1;
+  background: transparent;
   min-height: 100vh;
   min-height: 100svh;
   display: flex;
@@ -241,7 +242,7 @@
 /* ---------- SECTIONS ---------- */
 .section {
   position: relative;
-  z-index: 1;
+  background: transparent;
   padding-block: clamp(5rem, 13vh, 9rem);
 }
 
@@ -305,13 +306,14 @@
 /* ---------- PROJECTS ---------- */
 .projects {
   position: relative;
-  z-index: 1;
+  background: transparent;
   padding-block: clamp(5rem, 13vh, 9rem);
 }
 .projects__pin {
   display: flex;
   flex-direction: column;
   gap: 2rem;
+  background: transparent;
 }
 .projects__head {
   display: flex;
@@ -392,6 +394,7 @@
 
 /* ---------- CONTACT ---------- */
 .contact {
+  background: transparent;
   text-align: center;
   padding-block: clamp(7rem, 18vh, 12rem);
 }
@@ -427,8 +430,6 @@
 
 /* ---------- FOOTER ---------- */
 .footer {
-  position: relative;
-  z-index: 1;
   border-top: 1px solid var(--border);
   padding: 2rem 0;
   color: var(--dim);

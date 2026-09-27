@@ -176,8 +176,9 @@
 <body>
     <a class="skip-link" href="#main">Skip to content</a>
 
-    <!-- Ambient layers -->
-    <canvas id="ribbons" aria-hidden="true"></canvas>
+    <!-- Ambient layers: story threads (back = behind content, front = over the gutters) -->
+    <canvas id="ribbonsBack" class="story-canvas story-canvas--back" aria-hidden="true"></canvas>
+    <canvas id="ribbonsFront" class="story-canvas story-canvas--front" aria-hidden="true"></canvas>
     <div class="grain" aria-hidden="true"></div>
     <div class="scroll-progress" aria-hidden="true"><span></span></div>
 
@@ -206,7 +207,7 @@
 
     <main id="main">
         <!-- HERO -->
-        <section class="hero" id="home" data-tangle="0.15" aria-label="Introduction">
+        <section class="hero" id="home" aria-label="Introduction">
             <div class="container hero__inner">
                 <div class="status reveal"><span class="status__dot"></span>Open to SWE / Full-Stack internships</div>
                 <h1 class="hero__title"><span data-split>Jitesh Goyal</span></h1>
@@ -230,7 +231,7 @@
         </section>
 
         <!-- ABOUT -->
-        <section class="section" id="about" data-tangle="1" aria-labelledby="about-heading">
+        <section class="section" id="about" aria-labelledby="about-heading">
             <div class="container">
                 <header class="section-head reveal">
                     <span class="section-head__num mono">01</span>
@@ -242,7 +243,7 @@
         </section>
 
         <!-- SKILLS -->
-        <section class="section" id="skills" data-tangle="0.2" aria-labelledby="skills-heading">
+        <section class="section" id="skills" aria-labelledby="skills-heading">
             <div class="container">
                 <header class="section-head reveal">
                     <span class="section-head__num mono">02</span>
@@ -255,7 +256,7 @@
         </section>
 
         <!-- JOURNEY -->
-        <section class="section" id="journey" data-tangle="0.9" aria-labelledby="journey-heading">
+        <section class="section" id="journey" aria-labelledby="journey-heading">
             <div class="container">
                 <header class="section-head reveal">
                     <span class="section-head__num mono">03</span>
@@ -270,7 +271,7 @@
         </section>
 
         <!-- PROJECTS (horizontal scroll on desktop) -->
-        <section class="projects" id="projects" data-tangle="0.1" aria-labelledby="projects-heading">
+        <section class="projects" id="projects" aria-labelledby="projects-heading">
             <div class="projects__pin">
                 <div class="container projects__head">
                     <header class="section-head">
@@ -288,7 +289,7 @@
         </section>
 
         <!-- ACHIEVEMENTS (stacking cards) -->
-        <section class="section" id="achievements" data-tangle="0.8" aria-labelledby="achievements-heading">
+        <section class="section" id="achievements" aria-labelledby="achievements-heading">
             <div class="container">
                 <header class="section-head reveal">
                     <span class="section-head__num mono">05</span>
@@ -300,7 +301,7 @@
         </section>
 
         <!-- RESUME -->
-        <section class="section" id="resume" data-tangle="0.15" aria-labelledby="resume-heading">
+        <section class="section" id="resume" aria-labelledby="resume-heading">
             <div class="container">
                 <header class="section-head reveal">
                     <span class="section-head__num mono">06</span>
@@ -312,7 +313,7 @@
         </section>
 
         <!-- CONTACT -->
-        <section class="section contact" id="contact" data-tangle="1" aria-labelledby="contact-heading">
+        <section class="section contact" id="contact" aria-labelledby="contact-heading">
             <div class="container contact__inner">
                 <p class="section-head__num mono reveal">07 — What's next?</p>
                 <h2 class="contact__title reveal" id="contact-heading">Let's build something <span
@@ -357,6 +358,7 @@
     <script src="js/data.js" defer></script>
     <script src="js/icons.js" defer></script>
     <script src="js/render.js" defer></script>
+    <script src="js/story.js" defer></script>
     <script src="js/ribbons.js" defer></script>
     <script src="js/cards.js" defer></script>
     <script src="js/nav.js" defer></script>

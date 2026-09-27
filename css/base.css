@@ -5,7 +5,7 @@
   /* Palette: deep night + amber */
   --bg: #07080c;
   --bg-2: #0b0d13;
-  --surface: rgba(16, 19, 27, 0.78);
+  --surface: #10131b;
   --surface-solid: #11141c;
   --border: rgba(255, 255, 255, 0.08);
   --border-strong: rgba(255, 255, 255, 0.16);
@@ -48,6 +48,7 @@ html {
 }
 
 body {
+  position: relative;
   background: black;
   background-attachment: fixed;
   color: var(--text);

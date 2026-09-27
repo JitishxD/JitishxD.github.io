@@ -60,8 +60,27 @@ App.scrollFx = (function () {
         const rows = [...document.querySelectorAll(".marquee__row")];
         if (!rows.length || reduced) return;
         const pos = rows.map(() => 0);
-        let lastY = scrollY, vel = 0;
+        let lastY = scrollY, vel = 0, isVisible = true, frameCount = 0;
+
+        // Use IntersectionObserver to pause when not visible
+        const observer = new IntersectionObserver((entries) => {
+            isVisible = entries[0].isIntersecting;
+        }, { threshold: 0.1 });
+        rows.forEach(row => observer.observe(row));
+
         const loop = () => {
+            if (!isVisible) {
+                requestAnimationFrame(loop);
+                return;
+            }
+
+            // Throttle updates on mobile
+            frameCount++;
+            if (mqDesk.matches === false && frameCount % 2 !== 0) {
+                requestAnimationFrame(loop);
+                return;
+            }
+
             const dy = scrollY - lastY;
             lastY = scrollY;
             vel += (dy - vel) * 0.1;
@@ -85,10 +104,12 @@ App.scrollFx = (function () {
             proj.style.height = "";
             track.style.transform = "";
             cards.forEach((c) => { c.style.removeProperty("--off"); c.style.removeProperty("--focus"); });
-            return;
+        } else {
+            const dist = Math.max(0, track.scrollWidth - innerWidth);
+            proj.style.height = dist + innerHeight + "px";
         }
-        const dist = Math.max(0, track.scrollWidth - innerWidth);
-        proj.style.height = dist + innerHeight + "px";
+        // Horizontal pin changes #projects height; refresh story-thread layout
+        if (App.ribbons && typeof App.ribbons.rebuild === "function") App.ribbons.rebuild();
     }
 
     function update() {
@@ -100,7 +121,9 @@ App.scrollFx = (function () {
         if (tlWrap) {
             const r = tlWrap.getBoundingClientRect();
             tlFill.style.transform = `scaleY(${clamp((vh * 0.6 - r.top) / r.height)})`;
-            tlItems.forEach((it) => it.classList.toggle("is-active", it.getBoundingClientRect().top < vh * 0.6));
+            // Batch getBoundingClientRect calls for timeline items
+            const itemTops = tlItems.map(it => it.getBoundingClientRect().top);
+            tlItems.forEach((it, i) => it.classList.toggle("is-active", itemTops[i] < vh * 0.6));
         }
 
         // Horizontal project cards
@@ -111,8 +134,10 @@ App.scrollFx = (function () {
             track.style.transform = `translate3d(${(-p * dist).toFixed(1)}px,0,0)`;
             bar.style.transform = `scaleX(${p})`;
             const cx = innerWidth / 2;
-            cards.forEach((c) => {
-                const cr = c.getBoundingClientRect();
+            // Batch getBoundingClientRect calls for cards
+            const cardRects = cards.map(c => c.getBoundingClientRect());
+            cards.forEach((c, i) => {
+                const cr = cardRects[i];
                 const off = clamp(((cr.left + cr.width / 2 - cx) / innerWidth) * 1.6, -1, 1);
                 c.style.setProperty("--off", off.toFixed(3));
                 c.style.setProperty("--focus", (1 - Math.abs(off)).toFixed(3));
@@ -121,10 +146,12 @@ App.scrollFx = (function () {
 
         // Stacking cards: shrink + dim as the next card slides over
         if (!reduced) {
+            // Batch getBoundingClientRect calls for stack cards
+            const stackRects = stackCards.map(c => c.getBoundingClientRect());
             stackCards.forEach((c, i) => {
                 const next = stackCards[i + 1];
                 if (!next) return;
-                const r = c.getBoundingClientRect(), nr = next.getBoundingClientRect();
+                const r = stackRects[i], nr = stackRects[i + 1];
                 const p = clamp(1 - (nr.top - r.top) / r.height);
                 c.style.transform = `scale(${(1 - p * 0.06).toFixed(4)})`;
                 c.style.filter = `brightness(${(1 - p * 0.4).toFixed(3)})`;
@@ -162,6 +189,14 @@ App.scrollFx = (function () {
         addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(refresh, 150); });
         if (mqDesk.addEventListener) mqDesk.addEventListener("change", refresh);
         addEventListener("load", refresh);
+
+        // Pause scroll updates when tab is not visible
+        document.addEventListener("visibilitychange", () => {
+            if (document.visibilityState === "visible") {
+                update();
+            }
+        });
+
         update();
     }
 

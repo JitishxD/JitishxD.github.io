@@ -1,16 +1,180 @@
 /* ==========================================================================
-   effects.css — ribbons canvas, grain, reveals, glow, keyframes
+   effects.css — story threads, chapter rail, grain, reveals, glow, keyframes
    ========================================================================== */
 
-/* ---------- Ribbons canvas ---------- */
-#ribbons {
+/* ---------- Atmosphere (replaces flat black) ---------- */
+body {
+  background:
+    radial-gradient(1100px 620px at 8% -8%, rgba(245, 176, 72, 0.07), transparent 60%),
+    radial-gradient(900px 640px at 108% 38%, rgba(94, 234, 212, 0.045), transparent 60%),
+    radial-gradient(900px 700px at 50% 120%, rgba(255, 122, 69, 0.05), transparent 60%),
+    #06070a;
+  background-attachment: fixed;
+}
+
+/* Optimize for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  body {
+    background: #06070a;
+  }
+}
+
+/* ---------- Story threads (canvas) ---------- */
+.story-canvas {
   position: fixed;
-  inset: 0;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
-  z-index: 0;
+  max-width: none;
   pointer-events: none;
-  opacity: 0.7;
+  will-change: transform;
+}
+.story-canvas--back {
+  z-index: 0;
+}
+.story-canvas--front {
+  z-index: 3;
+}
+/* Content sits between the two canvases so threads weave under/over it */
+main,
+.footer {
+  position: relative;
+  z-index: 1;
+}
+@media (max-width: 760px) {
+  .story-canvas--back {
+    opacity: 0.7;
+  }
+}
+
+/* ---------- Chapter rail ---------- */
+.story-rail {
+  position: fixed;
+  left: clamp(10px, 1.3vw, 22px);
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 60;
+  display: none;
+}
+@media (min-width: 1100px) and (min-height: 560px) {
+  .story-rail {
+    display: block;
+  }
+}
+.story-rail ol {
+  display: grid;
+  gap: 10px;
+}
+.story-rail__tick {
+  position: relative;
+  display: block;
+  width: 30px;
+  height: 14px;
+  border-radius: 4px;
+}
+.story-rail__tick::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 10px;
+  height: 2px;
+  margin-top: -1px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.18);
+  transition:
+    width 0.5s var(--ease-out),
+    background 0.3s,
+    box-shadow 0.3s;
+}
+.story-rail__tick:hover::before {
+  width: 20px;
+  background: var(--text-2);
+}
+.story-rail__tick.is-past::before {
+  background: rgba(var(--glow), 0.45);
+}
+.story-rail__tick.is-active::before {
+  width: 28px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  box-shadow: 0 0 12px rgba(var(--glow), 0.7);
+}
+.story-rail__label {
+  position: absolute;
+  left: 42px;
+  top: 0;
+  display: grid;
+  gap: 0.1rem;
+  min-width: 190px;
+  max-width: 260px;
+  padding: 0.6rem 0.85rem;
+  border-radius: 12px;
+  background: rgba(11, 13, 19, 0.8);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--border);
+  box-shadow: 0 12px 40px -16px rgba(0, 0, 0, 0.8);
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(-6px, calc(var(--ly, 0px) - 50%));
+  transition:
+    opacity 0.4s,
+    transform 0.6s var(--ease-out);
+}
+.story-rail.is-talking .story-rail__label,
+.story-rail:hover .story-rail__label,
+.story-rail:focus-within .story-rail__label {
+  opacity: 1;
+  transform: translate(0, calc(var(--ly, 0px) - 50%));
+}
+.story-rail__num {
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+}
+.story-rail__title {
+  font-family: var(--font-display);
+  font-size: 0.98rem;
+  font-weight: 600;
+  color: var(--text);
+}
+.story-rail__line {
+  font-size: 0.78rem;
+  line-height: 1.4;
+  color: var(--muted);
+}
+
+/* ---------- Sections light up when the thread arrives ---------- */
+.section-head__line {
+  position: relative;
+  overflow: hidden;
+}
+.section-head__line::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2) 55%, transparent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 1.4s var(--ease-out);
+}
+.is-lit .section-head__line::after {
+  transform: scaleX(1);
+}
+.section-head__num {
+  transition: text-shadow 0.8s;
+}
+.is-lit .section-head__num {
+  text-shadow: 0 0 18px rgba(var(--glow), 0.65);
+}
+
+/* Finale: the knot is tied */
+.contact .text-grad {
+  transition: filter 1.2s var(--ease-out);
+}
+.story-complete .contact .text-grad {
+  filter: drop-shadow(0 0 26px rgba(var(--glow), 0.55));
 }
 
 /* ---------- Film grain ---------- */
@@ -91,6 +255,7 @@
   mask-composite: exclude;
   opacity: 0;
   transition: opacity 0.35s;
+  will-change: opacity, background;
 }
 [data-glow]::after {
   content: "";
@@ -102,6 +267,7 @@
   background: radial-gradient(420px circle at var(--mx, -200px) var(--my, -200px), rgba(var(--glow), 0.07), transparent 45%);
   opacity: 0;
   transition: opacity 0.35s;
+  will-change: opacity, background;
 }
 [data-glow]:hover::before,
 [data-glow]:hover::after {

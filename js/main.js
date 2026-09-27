@@ -12,11 +12,12 @@ App.toast = function (msg) {
 };
 
 (function start() {
-    App.render.all();      // 1. build the DOM from data
-    App.ribbons.init();    // 2. ambient effects
-    App.cards.init();      // 3. interactions (needs the rendered cards)
+    App.render.all();                 // 1. build the DOM from data
+    App.cards.init();                 // 2. interactions (needs the rendered cards)
     App.nav.init();
-    App.scrollFx.init();   // 4. scroll-driven effects
+    App.scrollFx.init();              // 3. scroll-driven effects (may change section heights)
+    if (App.story) App.story.init();  // 4. chapter rail (listens for ribbon events)
+    App.ribbons.init();               // 5. story threads (needs final layout heights)
 
     document.getElementById("year").textContent = new Date().getFullYear();
 
